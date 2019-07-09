@@ -1,15 +1,66 @@
-html {}
-
 .card-body {
   font-family: 'Rubik Mono One', sans-serif;
 }
 
+.rubik {
+  font-family: 'Rubik Mono One', sans-serif;
+}
+
+#h120 {
+  height: 150px;
+}
+
 .vertical-center {
   min-height: 100%;
-  /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh;
-  /* These two lines are counted as one :-)       */
-
   display: flex;
   align-items: center;
+}
+
+#header-wrap {
+  position: fixed;
+  left: 40vw;
+  -webkit-transition: 1s ease-in-out;
+  -moz-transition: 1s ease-in-out;
+  -o-transition: 1s ease-in-out;
+  transition: 1s ease-in-out;
+}
+
+#js-card-header {
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+}
+
+#js-card-header:hover {
+  transform: translateY(-5px);
+}
+
+.activeTranslate {
+  transform: translateX(-35vw);
+}
+
+
+#board {
+  Visibility: Hidden;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50vw;
+  max-width: 450px;
+  box-shadow: 2px 10px 12px rgba(189, 189, 189, 0.459);
+}
+
+.textBorder {
+  border: 5px solid #089aad;
+}
+
+.square {
+  height: 8vw;
+}
+
+.row .col:hover {
+  /* background-color: #089aad65; */
 }

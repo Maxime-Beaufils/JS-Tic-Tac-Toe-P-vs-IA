@@ -13,20 +13,66 @@
 </head>
 
 <body>
+	<!-- card robot -->
 	<header>
-		<div class="vertical-center">
-			<div class="card mx-auto border-0 text-center" id="js-card-header" style="width: 18rem;">
-				<img src="assets/robot.png" class="card-img-top mx-auto img-fluid" style="max-width: 70%; height: auto"
+		<div class="vertical-center" id='header-wrap'>
+			<div class="card border-0 text-center" id="js-card-header" style="width: 18rem">
+				<img src="assets/robot.png" class="card-img-top mx-auto pl-2 img-fluid" style="max-width: 70%; height: auto"
 					alt="dessin de robot">
 				<div class="card-body ">
 					<h5 class="card-title" id="js-title-card">-Tic Tac Toe- <br>the game you won't win</h5>
-					<a class="btn btn-info text-light" onclick="startGame()">Play me</a>
+					<a class="btn btn-info text-light" id="js-btn-card" onclick="displayController.showBoard()">Play</a>
 				</div>
 			</div>
 		</div>
 	</header>
-	<main>
 
+	<main>
+		<div id="h120"></div>
+		<!-- Board game -->
+		<div class="container mx-auto pt-3" id="board">
+			<h3 class="mb-4 px-4 rubik textBorder text-center" data-test="yolo" id="js-turn-text">your turn</h3>
+		<!-- first row -->
+			<div class="row">
+				<div data-cellId="1" data-available="available"
+					class="cellGame col square  border-right  border-bottom border-info d-flex flex-wrap align-items-center">
+					<img src="assets/circle.png" style="width: 100%;height: auto;"></div>
+
+				<div data-cellId="2" data-available="available"
+					class="cellGame col square border-left border-right  border-bottom border-info d-flex flex-wrap align-items-center">
+					<img src="assets/cross.png" style="width: 100%;height: auto;"></div>
+
+				<div data-cellId="3" data-available="available"
+					class="cellGame col square border-left  border-bottom border-info d-flex flex-wrap align-items-center">
+					<img src="assets/circle.png" style="width: 100%;height: auto;"></div>
+			</div>
+		<!-- second row -->
+			<div class="row">
+				<div data-cellId="4" data-available="available"
+					class="cellGame col square  border-right border-top border-bottom border-info d-flex flex-wrap align-items-center">
+				</div>
+				<div data-cellId="5" data-available="available"
+					class="cellGame col square border-left border-right border-top border-bottom border-info d-flex flex-wrap align-items-center">
+				</div>
+				<div data-cellId="6" data-available="available"
+					class="cellGame col square border-left  border-top border-bottom border-info d-flex flex-wrap align-items-center">
+				</div>
+			</div>
+		<!-- third row -->
+			<div class="row">
+				<div data-cellId="7" data-available="available"
+					class="cellGame col square  border-right border-top border-info d-flex flex-wrap align-items-center">
+				</div>
+
+				<div data-cellId="8" data-available="available"
+					class="cellGame col square border-left border-right border-top  border-info d-flex flex-wrap align-items-center">
+				</div>
+
+				<div data-cellId="9" data-available="available"
+					class="cellGame col square border-left  border-top  border-info d-flex flex-wrap align-items-center">
+				</div>
+			</div>
+		</div>
 	</main>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
