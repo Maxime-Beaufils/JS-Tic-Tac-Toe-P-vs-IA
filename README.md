@@ -1,1 +1,2 @@
-# JS-Tic-Tac-Toe-P-vs-IA
+# JS Tic-Tac-Toe 
+# P vs IA
