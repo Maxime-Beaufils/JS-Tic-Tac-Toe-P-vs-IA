@@ -19,7 +19,7 @@ const gameBoard = (() => {
     [1, 5, 9],
     [3, 5, 7]
   ]
- 
+
   function getTurn() {
     return yourTurn
   }
@@ -45,19 +45,19 @@ const gameBoard = (() => {
 const gameFlow = (() => {
 
   function addMark(cell) {
-    if (gameBoard.getTurn() && cell.dataset.available === "available") {
+    if (gameBoard.getTurn() && cell.dataset.available === "available" && !gameBoard.gameOverBoolean) {
       let crossImg = document.createElement("img");
       crossImg.src = "assets/cross.png";
       crossImg.style.width = "100%";
-      crossImg.style.height = "auto";
+      crossImg.style.height = "90%";
       cell.appendChild(crossImg);
       cell.dataset.available = "notAvailable";
 
-    } else if (!gameBoard.getTurn() && cell.dataset.available === "available") {
+    } else if (!gameBoard.getTurn() && cell.dataset.available === "available" && !gameBoard.gameOverBoolean) {
       let circleImg = document.createElement("img");
       circleImg.src = "assets/circle.png";
       circleImg.style.width = "100%";
-      circleImg.style.height = "auto";
+      circleImg.style.height = "80%";
       cell.appendChild(circleImg);
       cell.dataset.available = "notAvailable";
     } else {
@@ -82,10 +82,11 @@ const gameFlow = (() => {
 
     function compareArray() {
       let pW = w.map(arr => arr.every(element => p.indexOf(element) > -1));
-      (pW.includes(true)) ? gameOver("player"): null;
+      (pW.includes(true)) ? gameOver("You win"): null;
       let iaW = w.map(arr => arr.every(element => ia.indexOf(element) > -1));
-      (iaW.includes(true)) ? gameOver("robot"): null;
-      !gameBoard.gameOverBoolean ? changeTurn() : null;
+      (iaW.includes(true)) ? gameOver("You loose"): null;
+      !pW.includes(true) && !iaW.includes(true) && gameBoard.gameBoardArray.length === 0 ? gameOver("tie game") : null; // si aucun gagnant et plus de case valide à jouer, gameOver égalité
+      !gameBoard.gameOverBoolean ? changeTurn() : null; // si aucun gagnant, changeTurn()
     };
   }
 
@@ -96,10 +97,17 @@ const gameFlow = (() => {
 
   function gameOver(winner) {
     gameBoard.gameOverBoolean = true;
-    console.log(`${winner} win`)
+    document.getElementById('js-open-modal').click();
+    document.getElementById("exampleModalLabel").textContent = `${winner} !`;
+  }
+
+  function replay() {
+    document.location.reload(true);
+    // setTimeOut(document.getElementById('js-btn-card').click, 1000);
   }
   return {
-    addMark
+    addMark,
+    replay
   }
 })();
 /////////////////////////////////////////////////////////////////
@@ -107,13 +115,40 @@ const gameFlow = (() => {
 /////////////////////////////////////////////////////////////////
 const iaController = (() => {
   function iaPlay() {
-    let bestMove = gameBoard.gameBoardArray[Math.floor(Math.random() * gameBoard.gameBoardArray.length)];
-    setTimeout(suiteTraitement, 800);
+    let bestMove = searchBestMove(); //gameBoard.gameBoardArray[Math.floor(Math.random() * gameBoard.gameBoardArray.length)];
+    // console.log(bestMove)
+    setTimeout(suiteTraitement, 700);
 
     function suiteTraitement() {
       document.body.querySelector(`.cellGame[data-cellId='${bestMove}']`).click();
     }
   }
+
+  function searchBestMove() {
+    let validMove = gameBoard.gameBoardArray;
+    let winCombo = gameBoard.winCombo;
+    let currentIaBoard = gameBoard.iaArray.slice(0);
+    let currentPlayerBoard = gameBoard.playerArray.slice(0);
+    let winMove = [];
+
+    for (let i = 0; i < validMove.length; i++) {
+
+      currentIaBoard.push(validMove[i]);
+      let j = winCombo.map(arr => arr.every(element => currentIaBoard.indexOf(element) > -1));
+      (j.includes(true)) ? winMove.push(validMove[i]): currentIaBoard.pop();
+      
+      currentPlayerBoard.push(validMove[i]);
+      let h = winCombo.map(arr => arr.every(element => currentPlayerBoard.indexOf(element) > -1));
+      (h.includes(true)) ? winMove.push(validMove[i]): currentPlayerBoard.pop();
+    }
+
+    if(winMove[0]){
+      return winMove[0] 
+    }else{
+      return (gameBoard.gameBoardArray[Math.floor(Math.random() * gameBoard.gameBoardArray.length)])
+    } 
+  }
+
   return {
     iaPlay
   }
@@ -124,20 +159,25 @@ const iaController = (() => {
 const displayController = (() => {
 
   function showBoard() {
-    const cardHeader = document.getElementById('header-wrap');
-    const cardTitle = document.getElementById('js-title-card');
-    const cardbtn = document.getElementById('js-btn-card');
-    const board = document.getElementById("board");
+    if (document.getElementById('js-title-card').textContent !== "Good luck !") {
 
-    cardHeader.classList.add("activeTranslate");
-    cardTitle.textContent = "Good luck !";
-    cardbtn.textContent = "replay";
-    setTimeout(suiteTraitement, 800);
+      const cardHeader = document.getElementById('header-wrap');
+      const cardTitle = document.getElementById('js-title-card');
+      const cardbtn = document.getElementById('js-btn-card');
+      const board = document.getElementById("board");
 
-    function suiteTraitement() {
-      board.style.visibility = "visible";
+      cardHeader.classList.add("activeTranslate");
+      cardTitle.textContent = "Good luck !";
+      cardbtn.textContent = "replay";
+      setTimeout(suiteTraitement, 800);
+
+      function suiteTraitement() {
+        board.style.visibility = "visible";
+      }
+      displayController.overAvailableCase();
+    } else {
+      gameFlow.replay();
     }
-    displayController.overAvailableCase();
   };
 
   function overAvailableCase() {

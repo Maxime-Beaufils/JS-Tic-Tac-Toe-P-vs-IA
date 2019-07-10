@@ -32,7 +32,7 @@
 		<!-- Board game -->
 		<div class="container mx-auto pt-3" id="board">
 			<h3 class="mb-4 px-4 rubik textBorder text-center" data-test="yolo" id="js-turn-text">your turn</h3>
-		<!-- first row -->
+			<!-- first row -->
 			<div class="row">
 				<div data-cellId="1" data-available="available" onclick="gameFlow.addMark(this)"
 					class="cellGame col square  border-right  border-bottom border-info d-flex flex-wrap align-items-center">
@@ -40,13 +40,13 @@
 
 				<div data-cellId="2" data-available="available" onclick="gameFlow.addMark(this)"
 					class="cellGame col square border-left border-right  border-bottom border-info d-flex flex-wrap align-items-center">
-					</div>
+				</div>
 
 				<div data-cellId="3" data-available="available" onclick="gameFlow.addMark(this)"
 					class="cellGame col square border-left  border-bottom border-info d-flex flex-wrap align-items-center">
-					</div>
+				</div>
 			</div>
-		<!-- second row -->
+			<!-- second row -->
 			<div class="row">
 				<div data-cellId="4" data-available="available" onclick="gameFlow.addMark(this)"
 					class="cellGame col square  border-right border-top border-bottom border-info d-flex flex-wrap align-items-center">
@@ -58,7 +58,7 @@
 					class="cellGame col square border-left  border-top border-bottom border-info d-flex flex-wrap align-items-center">
 				</div>
 			</div>
-		<!-- third row -->
+			<!-- third row -->
 			<div class="row">
 				<div data-cellId="7" data-available="available" onclick="gameFlow.addMark(this)"
 					class="cellGame col square  border-right border-top border-info d-flex flex-wrap align-items-center">
@@ -75,6 +75,26 @@
 		</div>
 	</main>
 
+	<aside>
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary" id="js-open-modal" data-toggle="modal" data-target="#resultModal" style="display:none">
+			Launch demo modal
+		</button>
+		<!-- Modal -->
+		<div class="modal fade" id="resultModal"  tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="false">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header d-flex flex-column flex-wrap align-items-center">
+						<img src="assets/robot.png" class="rounded img-fluid">
+						<h3 class="modal-title rubik" id="exampleModalLabel"></h3>
+							<button type="button" onclick="gameFlow.replay()" class="btn btn-info">Replay</button>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</aside>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
 	</script>
