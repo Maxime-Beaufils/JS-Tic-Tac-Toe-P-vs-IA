@@ -1,9 +1,13 @@
+/////////////////////////////////////////////////////////////////
+// GAMEBOARD - data
+/////////////////////////////////////////////////////////////////
 const gameBoard = (() => {
 
   let gameBoardArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   let playerArray = [];
   let iaArray = [];
   let yourTurn = true;
+  let gameOverBoolean = false;
 
   const winCombo = [
     [1, 2, 3],
@@ -15,14 +19,14 @@ const gameBoard = (() => {
     [1, 5, 9],
     [3, 5, 7]
   ]
-
+ 
   function getTurn() {
     return yourTurn
   }
 
   function switchTurn() {
     yourTurn ? yourTurn = false : yourTurn = true;
-    !yourTurn ? iaController.iaPlay() : null;
+    !gameOverBoolean && !yourTurn ? iaController.iaPlay() : null;
   }
 
   return {
@@ -30,10 +34,13 @@ const gameBoard = (() => {
     playerArray,
     iaArray,
     winCombo,
+    gameOverBoolean,
     switchTurn,
     getTurn
   }
 })();
+/////////////////////////////////////////////////////////////////
+// GAME FLOW
 /////////////////////////////////////////////////////////////////
 const gameFlow = (() => {
 
@@ -67,20 +74,37 @@ const gameFlow = (() => {
   }
 
   function checkWinner() {
+    let p = gameBoard.playerArray;
+    let ia = gameBoard.iaArray;
+    let w = gameBoard.winCombo;
 
-    changeTurn()
+    (gameBoard.gameBoardArray.length > 5) ? changeTurn(): compareArray();
+
+    function compareArray() {
+      let pW = w.map(arr => arr.every(element => p.indexOf(element) > -1));
+      (pW.includes(true)) ? gameOver("player"): null;
+      let iaW = w.map(arr => arr.every(element => ia.indexOf(element) > -1));
+      (iaW.includes(true)) ? gameOver("robot"): null;
+      !gameBoard.gameOverBoolean ? changeTurn() : null;
+    };
   }
 
   function changeTurn() {
-    gameBoard.switchTurn(); // lance iaPlay()
     displayController.toogleTurnIndication();
+    gameBoard.switchTurn(); // lance iaPlay()
   }
 
+  function gameOver(winner) {
+    gameBoard.gameOverBoolean = true;
+    console.log(`${winner} win`)
+  }
   return {
     addMark
   }
 })();
-///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+// IA CONTROLLER
+/////////////////////////////////////////////////////////////////
 const iaController = (() => {
   function iaPlay() {
     let bestMove = gameBoard.gameBoardArray[Math.floor(Math.random() * gameBoard.gameBoardArray.length)];
@@ -94,7 +118,9 @@ const iaController = (() => {
     iaPlay
   }
 })();
-////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+//DISPLAY CONTROLLER
+/////////////////////////////////////////////////////////////////
 const displayController = (() => {
 
   function showBoard() {
