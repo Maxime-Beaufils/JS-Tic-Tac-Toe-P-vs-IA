@@ -145,6 +145,7 @@ const iaController = (() => {
     if(winMove[0]){
       return winMove[0] 
     }else{
+      // partie à améliorer pour la performance de l'ia
       return (gameBoard.gameBoardArray[Math.floor(Math.random() * gameBoard.gameBoardArray.length)])
     } 
   }
