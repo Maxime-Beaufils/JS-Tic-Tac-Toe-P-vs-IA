@@ -55,7 +55,7 @@ const gameFlow = (() => {
 
     } else if (!gameBoard.getTurn() && cell.dataset.available === "available" && !gameBoard.gameOverBoolean) {
       let circleImg = document.createElement("img");
-      circleImg.src = "assets/circle.png";
+      circleImg.src = "assets/circle.jpg";
       circleImg.style.width = "100%";
       circleImg.style.height = "80%";
       cell.appendChild(circleImg);
@@ -115,41 +115,62 @@ const gameFlow = (() => {
 /////////////////////////////////////////////////////////////////
 const iaController = (() => {
   function iaPlay() {
-    let bestMove = searchBestMove(); //gameBoard.gameBoardArray[Math.floor(Math.random() * gameBoard.gameBoardArray.length)];
-    // console.log(bestMove)
-    setTimeout(suiteTraitement, 700);
+    let bestMove = searchBestMove(); 
+    setTimeout(suiteTraitement, 400);
 
     function suiteTraitement() {
       document.body.querySelector(`.cellGame[data-cellId='${bestMove}']`).click();
     }
   }
-
   function searchBestMove() {
     let validMove = gameBoard.gameBoardArray;
     let winCombo = gameBoard.winCombo;
-    let currentIaBoard = gameBoard.iaArray.slice(0);
-    let currentPlayerBoard = gameBoard.playerArray.slice(0);
+    let currentIaBoard = gameBoard.iaArray.slice();
+    let currentPlayerBoard = gameBoard.playerArray.slice();
     let winMove = [];
-
+    
     for (let i = 0; i < validMove.length; i++) {
-
+      
       currentIaBoard.push(validMove[i]);
       let j = winCombo.map(arr => arr.every(element => currentIaBoard.indexOf(element) > -1));
-      (j.includes(true)) ? winMove.push(validMove[i]): currentIaBoard.pop();
+      (j.includes(true)) ? (winMove.push(validMove[i]),currentIaBoard.pop()): currentIaBoard.pop();
       
       currentPlayerBoard.push(validMove[i]);
       let h = winCombo.map(arr => arr.every(element => currentPlayerBoard.indexOf(element) > -1));
-      (h.includes(true)) ? winMove.push(validMove[i]): currentPlayerBoard.pop();
+      (h.includes(true)) ? (winMove.push(validMove[i]),currentPlayerBoard.pop()) : currentPlayerBoard.pop();
     }
-
+      console.log({winMove});
     if(winMove[0]){
       return winMove[0] 
     }else{
-      // partie à améliorer pour la performance de l'ia
-      return (gameBoard.gameBoardArray[Math.floor(Math.random() * gameBoard.gameBoardArray.length)])
+      return minMax(gameBoard.gameBoardArray, winCombo, gameBoard.iaArray);
     } 
   }
-
+  
+  function minMax(validMove, winCombo, currentIaBoard) {
+    let nextMove, ia = [], h = [], corner = [1,3,7,9];
+    if(!currentIaBoard.length && gameBoard.playerArray[0] !== 5){return 5};
+    if(!currentIaBoard.length){return corner[Math.floor(Math.random() * corner.length)]};
+    for (let i = 0; i < validMove.length; i++) {
+      let cIa = [...currentIaBoard.slice()];
+      let vM  = validMove.slice();
+      for (let j = 0; j < vM.length; j++) {
+        vM  = validMove.slice();
+        vM.splice(j,1);
+        for (let k = 0; k < vM.length; k++) {
+          ia.push([...cIa,vM[i], vM[k]]);
+          h.push(winCombo.map(arr => arr.every(element => ia[ia.length-1].indexOf(element) > -1)));
+          if(h[h.length-1].includes(true)){nextMove = vM[i]; break}
+          h = [];
+        }
+      }
+    }
+    if(!nextMove){ 
+      return gameBoard.gameBoardArray[Math.floor(Math.random() * gameBoard.gameBoardArray.length)];
+    }else{
+      return nextMove;
+    }
+  }
   return {
     iaPlay
   }

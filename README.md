@@ -5,4 +5,4 @@ Le jeu du morpion contre une ia développé en javascript(vanilla).
 Projet d'entrainement d'[odin project](https://www.theodinproject.com/) aux module pattern.
 
 
-[en production(WIP: il est encore possible de battre l'ia)](https://maxime-beaufils.github.io/JS-TicTacToe-PvsAI/)
+[en production](https://maxime-beaufils.github.io/JS-TicTacToe-PvsAI/)
