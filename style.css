@@ -53,7 +53,8 @@
 
 @media (max-width: 480px) {
   .activeTranslate {
-    transform: translateY(35vh) scale(0.6);
+    transform: translateY(30vh) scale(0.55);
+    z-index: -1;
   }
 }
 
@@ -78,7 +79,7 @@
     flex-direction: column;
     justify-content: center;
     width: 80vw;
-    margin-top: -50px;
+    margin-top: -100px;
     max-width: 450px;
     box-shadow: 2px 10px 12px rgba(189, 189, 189, 0.459);
   }
